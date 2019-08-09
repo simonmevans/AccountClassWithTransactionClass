@@ -60,14 +60,36 @@ public class Account {
     }
 
     public void withdraw(double amount) {
-        Transaction transaction = new Transaction('W', amount, getBalance());
+        if ((balance -= amount) >= 0) {
+            balance -= amount;
+            Transaction transaction = new Transaction('W', amount, getBalance());
+            this.transactions.add(transaction);
+        } else
+            System.out.println("!!!Transaction Canceled not enough funds");
+
+    }
+
+    public void withdraw(double amount, String description) {
+        if ((balance -= amount) >= 0) {
+            balance -= amount;
+            Transaction transaction = new Transaction('W', amount, getBalance(), description);
+            this.transactions.add(transaction);
+        } else
+            System.out.println("!!!Transaction Canceled not enough funds");
+
+    }
+
+    public void deposit(double amount, String description) {
+        balance += amount;
+        Transaction transaction = new Transaction('D', amount, getBalance(), description);
         this.transactions.add(transaction);
-        balance -= amount;
 
     }
 
     public void deposit(double amount) {
         balance += amount;
+        Transaction transaction = new Transaction('D', amount, getBalance());
+        this.transactions.add(transaction);
     }
 
     public String getName() {
@@ -76,7 +98,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account Info :\n Name: " + getName() + "\n Created: " + getDateCreated() + "\n Balance: " + getBalance() + " \n Monthly Int: " + getMonthlyInterest() + "\n AIR: " + getAnnualInterestRate()+
-                "\n     Transaction List" + "\n     ----------------\n"+ transactions.toString();
+        return "Account Info :\n Name: " + getName() + "\n Created: " + getDateCreated() + "\n Balance: " + getBalance() + " \n Monthly Int: " + getMonthlyInterest() + "\n AIR: " + getAnnualInterestRate() +
+                "\n     Transaction List" + "\n     ----------------\n" + transactions.toString();
     }
 }
